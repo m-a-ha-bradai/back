@@ -31,7 +31,7 @@ default: "user"
 isActive: {
 
 type: Boolean,
-default: true,
+default: false,
 required: false
 },
 avatar :{

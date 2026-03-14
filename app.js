@@ -1,5 +1,8 @@
 const dotenv = require('dotenv');
 
+dotenv.config();
+console.log("ENV TEST =>", process.env.DATABASE);
+console.log("PORT TEST =>", process.env.PORT);
 const express = require('express');
 const mongoose = require("mongoose");
 const cors = require('cors');
