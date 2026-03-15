@@ -6,6 +6,7 @@ console.log("PORT TEST =>", process.env.PORT);
 const express = require('express');
 const mongoose = require("mongoose");
 const cors = require('cors');
+const path = require('path');
 
 const app = express();
 
@@ -33,16 +34,20 @@ mongoose.connect(process.env.DATABASE)
     process.exit();
 });
 
-// route test
-app.get("/", (req,res) => {
-    res.send("bonjour");
-});
 
 // routes API
 app.use('/api/users', userRouter);
 app.use('/api/categories', categorieRouter);
 app.use('/api/scategories', scategorieRouter);
 app.use('/api/articles', articleRouter);
+
+//dist reactjs
+app.use(express.static(path.join(__dirname, './client/build'))); // Route pour
+app.get('/{*any}', (req, res) => { res.sendFile(path.join(__dirname,'./client/build/index.html')); });
+
+
+
+
 
 app.listen(process.env.PORT, () => {
     console.log(`Server is listening on port ${process.env.PORT}`);
