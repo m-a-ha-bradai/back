@@ -5,7 +5,7 @@ const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const nodemailer=require('nodemailer');
 
-
+// nodemailer 
 var transporter =nodemailer.createTransport({
 service:'gmail',
 auth:{
@@ -18,7 +18,7 @@ rejectUnauthorized:false
 
 
 
-// créer un nouvel utilisateur
+// créer un nouvel utilisateur/////
 router.post('/register', async (req, res) => {
 try {
 let { email, password, firstname, lastname ,avatar } = req.body
