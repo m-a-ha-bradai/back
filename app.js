@@ -1,56 +1,67 @@
+// Importations
 const dotenv = require('dotenv');
+dotenv.config(); // Charger les variables d’environnement UNE SEULE FOIS
 
-dotenv.config();
-console.log("ENV TEST =>", process.env.DATABASE);
-console.log("PORT TEST =>", process.env.PORT);
 const express = require('express');
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 const cors = require('cors');
 const path = require('path');
 
 const app = express();
 
+// Routes
 const categorieRouter = require("./routes/categorie.route");
 const scategorieRouter = require("./routes/scategorie.route");
 const articleRouter = require("./routes/article.route");
 const userRouter = require("./routes/user.route");
 
-// config dotenv
-dotenv.config();
+// =======================
+// Middlewares
+// =======================
 
-// cors
 app.use(cors());
-
-// BodyParser
 app.use(express.json());
 
-// connexion base de données
+// =======================
+// Connexion MongoDB
+// =======================
+
 mongoose.connect(process.env.DATABASE)
 .then(() => {
-    console.log("DataBase Successfully Connected");
+    console.log("Database Successfully Connected");
 })
 .catch(err => {
-    console.log("Unable to connect to database", err);
-    process.exit();
+    console.error("Unable to connect to database:", err);
+    process.exit(1);
 });
 
+// =======================
+// Routes API
+// =======================
 
-// routes API
 app.use('/api/users', userRouter);
 app.use('/api/categories', categorieRouter);
 app.use('/api/scategories', scategorieRouter);
 app.use('/api/articles', articleRouter);
 
-//dist reactjs
-app.use(express.static(path.join(__dirname, './client/build'))); // Route pour
-app.get('/{*any}', (req, res) => { res.sendFile(path.join(__dirname,'./client/build/index.html')); });
+// =======================
+// React Build (Production)
+// =======================
 
+app.use(express.static(path.join(__dirname, 'client/build')));
 
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'client/build', 'index.html'));
+});
 
+// =======================
+// Lancement du serveur
+// =======================
 
+const PORT = process.env.PORT || 5000;
 
-app.listen(process.env.PORT, () => {
-    console.log(`Server is listening on port ${process.env.PORT}`);
+app.listen(PORT, () => {
+    console.log(` Server is running on port ${PORT}`);
 });
 
 module.exports = app;
