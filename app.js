@@ -41,10 +41,13 @@ app.use('/api/categories', categorieRouter);
 app.use('/api/scategories', scategorieRouter);
 app.use('/api/articles', articleRouter);
 
-//dist reactjs
-app.use(express.static(path.join(__dirname, './client/build'))); // Route pour
-app.get('/{*any}', (req, res) => { res.sendFile(path.join(__dirname,'./client/build/index.html')); });
 
+// Serve React build
+app.use(express.static(path.join(__dirname, "client/build")));
+
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "client/build", "index.html"));
+});
 
 
 
